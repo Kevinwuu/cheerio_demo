@@ -1,0 +1,24 @@
+{
+  "name": "cheerio_demo",
+  "version": "1.0.0",
+  "description": "cheerio practice",
+  "main": "crawData.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevinwuu/cheerio_demo.git"
+  },
+  "author": "Ethan Wu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kevinwuu/cheerio_demo/issues"
+  },
+  "homepage": "https://github.com/Kevinwuu/cheerio_demo#readme"
+}
