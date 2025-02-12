@@ -18,6 +18,6 @@ node crawData.js
 ## TODO
 
 - [x] basic usage
-- [ ] save file (csv, xlsx)
+- [x] save file (csv, xlsx)
 - [ ] nightwatch manipulate
 - [ ] GUI

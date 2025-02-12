@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
+import fs from "fs";
 
 const REQUEST_URL = "https://www.vscinemas.com.tw/vsweb/film/hot.aspx";
 
@@ -28,10 +29,24 @@ const getHotMovieInfo = async () => {
   }
 };
 
+const convertToCSV = (data) => {
+  return data.map((row) => row.map((item) => `"${item}"`).join(",")).join("\n");
+};
+
+const saveToCSV = (filename, data) => {
+  const csvData = convertToCSV(data);
+  fs.writeFileSync(filename, csvData, "utf-8");
+  console.log("CSV file saved!");
+};
+
 (async () => {
   try {
     const result = await getHotMovieInfo();
-    console.log("result", result);
+
+    const csvData = [["index", "title"]]; // 2 columns
+    result.forEach((value, index) => csvData.push([index, value]));
+
+    saveToCSV("top5_film_title.csv", csvData);
   } catch (error) {
     console.error("Error:", error);
   }
