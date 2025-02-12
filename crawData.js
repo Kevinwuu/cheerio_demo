@@ -6,7 +6,13 @@ const REQUEST_URL = "https://www.vscinemas.com.tw/vsweb/film/hot.aspx";
 
 const getHotMovieInfo = async () => {
   try {
-    const response = await fetch(REQUEST_URL);
+    const response = await fetch(REQUEST_URL, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+        Referer: "https://www.google.com/", // 偽造來源，避免被認為是爬蟲程式而阻擋
+      },
+    });
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const body = await response.text();

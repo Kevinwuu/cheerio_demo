@@ -1,13 +1,35 @@
 name: run crawler script
 
 on:
+  push: # trigger when push
+    branches:
+      - dev
+      - feature/setup-github-action
   schedule:
     - cron: "*/5 * * * *" # every 5 minutes
 
+  workflow_dispatch: # allow manual trigger
+
 jobs:
-  greeting:
+  run-crawler-script:
     runs-on: ubuntu-latest
     steps:
+      - name: Print Current Time
+        run: date -u
+
+      - name: Test connectivity to Google
+        run: curl -I https://www.google.com
+
+      - name: Test connectivity to GitHub
+        run: curl -I https://github.com
+
+      # - name: Check if server is reachable
+      #   run: |
+      #     curl -I https://www.vscinemas.com.tw/vsweb/film/hot.aspx
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
@@ -17,3 +39,12 @@ jobs:
         run: |
           yarn
           node crawData.js
+
+      - name: Upload CSV as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact to upload.
+          # Optional. Default is 'artifact'
+          name: csv-result
+          path: ./top5_film_title.csv # 这里是你生成的 CSV 文件路径
+          retention-days: 7

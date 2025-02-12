@@ -1,4 +1,6 @@
-# cheerio_demo
+# cheerioDemo
+
+![workflow status badge](https://github.com/Kevinwuu/cheerio_demo/actions/workflows/crawler.yml/badge.svg)
 
 POC for Nodejs web crawler.
 
