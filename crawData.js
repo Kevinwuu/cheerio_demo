@@ -1,28 +1,38 @@
-const request = require("request");
-const cheerio = require("cheerio");
+import fetch from "node-fetch";
+import * as cheerio from "cheerio";
 
-const url = "https://www.vscinemas.com.tw/vsweb/film/hot.aspx";
+const REQUEST_URL = "https://www.vscinemas.com.tw/vsweb/film/hot.aspx";
 
-const getHotMovieInfo = function () {
-  request(
-    {
-      url,
-      method: "GET",
-    },
-    function (error, response, body) {
-      if (error || !body) {
-        return;
-      }
-      const $ = cheerio.load(body);
-      let hottest = $(".info > h1 > a").text();
-      let hotList = $(".infoArea > h2 > a");
-      console.log("1:", hottest);
+const getHotMovieInfo = async () => {
+  try {
+    const response = await fetch(REQUEST_URL);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      hotList.each((i, elem) => {
-        console.log(i + 2 + ":", elem.children[0].data);
-      });
-    }
-  );
+    const body = await response.text();
+    const $ = cheerio.load(body);
+
+    let hottestFilmTitle = $(".info > h1 > a").text();
+    let hotList = $(".infoArea > h2 > a");
+
+    const resultJson = hotList.map((i, elem) => elem.children[0].data).get();
+
+    let top5FilmTitleList = [hottestFilmTitle, ...resultJson];
+
+    top5FilmTitleList.forEach((title, index) =>
+      console.log(`${index + 1}: ${title}`)
+    );
+
+    return top5FilmTitleList;
+  } catch (error) {
+    console.error("Fetch error", error);
+  }
 };
 
-getHotMovieInfo();
+(async () => {
+  try {
+    const result = await getHotMovieInfo();
+    console.log("result", result);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+})();
